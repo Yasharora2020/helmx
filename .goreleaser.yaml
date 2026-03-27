@@ -1,0 +1,133 @@
+# GoReleaser configuration for helmx - Helm Explorer TUI
+# https://goreleaser.com
+
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - id: helmx
+    binary: helmx
+    main: ./cmd/helmx
+    env:
+      - CGO_ENABLED=0
+    targets:
+      - linux_amd64
+      - linux_arm64
+      - darwin_amd64
+      - darwin_arm64
+      - windows_amd64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - id: default
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+    files:
+      - README.md
+      - LICENSE*
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "^ci:"
+      - Merge pull request
+      - Merge branch
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: Bug Fixes
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Improvements
+      regexp: '^.*?(perf|refactor)(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: yasharora2020
+    name: helmx
+  prerelease: auto
+  mode: replace
+  header: |
+    ## helmx - Helm Explorer TUI {{ .Tag }}
+
+    A terminal UI for Helm, providing a k9s-style experience for managing Helm releases.
+
+    ### Installation
+
+    **Download binary (recommended)**
+    ```bash
+    # Linux (amd64)
+    curl -LO https://github.com/yasharora2020/helmx/releases/download/{{ .Tag }}/helmx_Linux_x86_64.tar.gz
+    tar -xzf helmx_Linux_x86_64.tar.gz
+    sudo mv helmx /usr/local/bin/
+
+    # Linux (arm64)
+    curl -LO https://github.com/yasharora2020/helmx/releases/download/{{ .Tag }}/helmx_Linux_arm64.tar.gz
+    tar -xzf helmx_Linux_arm64.tar.gz
+    sudo mv helmx /usr/local/bin/
+
+    # macOS (Apple Silicon)
+    curl -LO https://github.com/yasharora2020/helmx/releases/download/{{ .Tag }}/helmx_Darwin_arm64.tar.gz
+    tar -xzf helmx_Darwin_arm64.tar.gz
+    sudo mv helmx /usr/local/bin/
+
+    # macOS (Intel)
+    curl -LO https://github.com/yasharora2020/helmx/releases/download/{{ .Tag }}/helmx_Darwin_x86_64.tar.gz
+    tar -xzf helmx_Darwin_x86_64.tar.gz
+    sudo mv helmx /usr/local/bin/
+
+    # Windows (amd64)
+    # Download helmx_Windows_x86_64.tar.gz from the release assets
+    ```
+
+    **Build from source**
+    ```bash
+    go install github.com/yasharora2020/helmx/cmd/helmx@{{ .Tag }}
+    ```
+  footer: |
+    ---
+
+    **Full Changelog**: https://github.com/yasharora2020/helmx/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+brews:
+  - name: helmx
+    repository:
+      owner: yasharora2020
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/yasharora2020/helmx"
+    description: "A terminal UI for Helm - k9s-style experience for managing Helm releases"
+    license: "Apache-2.0"
+    skip_upload: true
+    install: |
+      bin.install "helmx"
+    test: |
+      system "#{bin}/helmx", "--version"

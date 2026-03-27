@@ -1,0 +1,30 @@
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+  exclusions:
+    presets:
+      - common-false-positives
+    rules:
+      - linters:
+          - errcheck
+        source: "defer "
+      - linters:
+          - errcheck
+        source: "fmt\\.Fprint"
+      - linters:
+          - staticcheck
+        text: "QF"
+
+formatters:
+  enable:
+    - gofmt

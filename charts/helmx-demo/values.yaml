@@ -1,0 +1,140 @@
+# helmx-demo chart values
+# This chart deploys a simple nginx-based web application.
+
+# -- Number of replicas to run
+replicaCount: 1
+
+image:
+  # -- Container image repository
+  repository: nginx
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Container image tag (defaults to appVersion)
+  tag: "1.25"
+
+# -- Image pull secrets for private registries
+imagePullSecrets: []
+
+# -- Override the chart name
+nameOverride: ""
+
+# -- Override the full resource name
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Create a service account
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- Name of the service account (auto-generated if empty)
+  name: ""
+
+# -- Annotations for pods
+podAnnotations:
+  prometheus.io/scrape: "false"
+
+# -- Pod security context
+podSecurityContext: {}
+
+# -- Container security context
+securityContext: {}
+
+service:
+  # -- Service type (ClusterIP, NodePort, LoadBalancer)
+  type: ClusterIP
+  # -- Service port
+  port: 80
+  # -- Target port on the container
+  targetPort: 8080
+
+ingress:
+  # -- Enable ingress
+  enabled: false
+  # -- Ingress class name
+  className: "nginx"
+  # -- Ingress annotations
+  annotations: {}
+  # -- Ingress hosts
+  hosts:
+    - host: helmx-demo.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- Ingress TLS configuration
+  tls: []
+
+resources:
+  # -- Resource limits
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  # -- Resource requests
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  # -- Enable horizontal pod autoscaler
+  enabled: false
+  # -- Minimum replicas
+  minReplicas: 1
+  # -- Maximum replicas
+  maxReplicas: 10
+  # -- Target CPU utilization percentage
+  targetCPUUtilizationPercentage: 80
+
+# -- Node selector for pod scheduling
+nodeSelector: {}
+
+# -- Tolerations for pod scheduling
+tolerations: []
+
+# -- Affinity rules for pod scheduling
+affinity: {}
+
+app:
+  # -- Application environment (development, staging, production)
+  environment: development
+  # -- Log level (debug, info, warn, error)
+  logLevel: info
+  # -- Custom message shown on the web page
+  message: "Hello from helmx-demo!"
+  # -- Feature flags
+  features:
+    darkMode: false
+    metrics: true
+    healthCheck: true
+
+config:
+  # -- Server port inside container
+  serverPort: 80
+  # -- Server read timeout in seconds
+  readTimeout: 30
+  # -- Server write timeout in seconds
+  writeTimeout: 30
+  # -- Enable CORS
+  corsEnabled: false
+  # -- Allowed CORS origins
+  corsOrigins:
+    - "https://example.com"
+
+healthCheck:
+  # -- Liveness probe path
+  liveness: /
+  # -- Readiness probe path
+  readiness: /
+  # -- Initial delay in seconds
+  initialDelaySeconds: 10
+  # -- Period between checks in seconds
+  periodSeconds: 15
+
+persistence:
+  # -- Enable persistent storage
+  enabled: false
+  # -- Storage class name
+  storageClass: ""
+  # -- Access modes
+  accessModes:
+    - ReadWriteOnce
+  # -- Storage size
+  size: 1Gi

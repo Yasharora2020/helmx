@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "helmx-demo values",
+  "description": "Configuration values for the helmx-demo chart",
+  "type": "object",
+  "required": ["replicaCount", "image", "service"],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "description": "Number of pod replicas to run",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "description": "Container image configuration",
+      "required": ["repository", "tag"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "description": "Container image repository",
+          "default": "nginx"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "description": "Image pull policy",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        },
+        "tag": {
+          "type": "string",
+          "description": "Container image tag",
+          "default": "1.25"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "description": "Kubernetes service configuration",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Service type",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "description": "Service port",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 80
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "description": "Ingress configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable ingress resource",
+          "default": false
+        },
+        "className": {
+          "type": "string",
+          "description": "Ingress class name",
+          "default": "nginx"
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "description": "CPU and memory resource limits and requests",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "description": "Maximum resource usage",
+          "properties": {
+            "cpu": { "type": "string", "description": "CPU limit (e.g. 200m, 1)", "default": "200m"},
+            "memory": { "type": "string", "description": "Memory limit (e.g. 256Mi, 1Gi)", "default": "256Mi" }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "description": "Minimum resource reservation",
+          "properties": {
+            "cpu": { "type": "string", "description": "CPU request", "default": "100m" },
+            "memory": { "type": "string", "description": "Memory request", "default": "128Mi" }
+          }
+        }
+      }
+    },
+    "autoscaling": {
+      "type": "object",
+      "description": "Horizontal pod autoscaler configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable HPA",
+          "default": false
+        },
+        "minReplicas": {
+          "type": "integer",
+          "description": "Minimum number of replicas",
+          "minimum": 1,
+          "default": 1
+        },
+        "maxReplicas": {
+          "type": "integer",
+          "description": "Maximum number of replicas",
+          "minimum": 1,
+          "default": 10
+        },
+        "targetCPUUtilizationPercentage": {
+          "type": "integer",
+          "description": "Target CPU utilization for scaling",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 80
+        }
+      }
+    },
+    "app": {
+      "type": "object",
+      "description": "Application-level configuration",
+      "properties": {
+        "environment": {
+          "type": "string",
+          "description": "Deployment environment",
+          "enum": ["development", "staging", "production"],
+          "default": "development"
+        },
+        "logLevel": {
+          "type": "string",
+          "description": "Logging verbosity",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info"
+        },
+        "message": {
+          "type": "string",
+          "description": "Custom message shown on the web page",
+          "default": "Hello from helmx-demo!"
+        },
+        "features": {
+          "type": "object",
+          "description": "Feature flag toggles",
+          "properties": {
+            "darkMode": { "type": "boolean", "description": "Enable dark mode UI", "default": false },
+            "metrics": { "type": "boolean", "description": "Expose Prometheus metrics", "default": true },
+            "healthCheck": { "type": "boolean", "description": "Enable health check endpoints", "default": true }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "description": "Persistent volume configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable persistent storage",
+          "default": false
+        },
+        "size": {
+          "type": "string",
+          "description": "Storage size (e.g. 1Gi, 10Gi)",
+          "default": "1Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "description": "Storage class name (empty = cluster default)",
+          "default": ""
+        }
+      }
+    }
+  }
+}

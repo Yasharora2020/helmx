@@ -1,0 +1,22 @@
+apiVersion: v2
+name: helmx-demo
+description: |
+  A demo application chart for testing helmx features.
+  Includes a simple web server with configurable replicas,
+  resource limits, ingress, and autoscaling.
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+home: https://github.com/yasharora2020/helmx
+sources:
+  - https://github.com/yasharora2020/helmx
+keywords:
+  - demo
+  - nginx
+  - web
+  - helmx
+maintainers:
+  - name: helmx-tester
+    email: test@example.com
+annotations:
+  category: Demo

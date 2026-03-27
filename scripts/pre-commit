@@ -1,0 +1,48 @@
+#!/bin/bash
+# Pre-commit hook for helm-tui
+# Install: cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+set -e
+
+echo "Running pre-commit checks..."
+
+# Check if go is available
+if ! command -v go &> /dev/null; then
+    echo "Error: go is not installed"
+    exit 1
+fi
+
+# Format check
+echo "Checking go fmt..."
+GOFMT_OUTPUT=$(gofmt -l . 2>&1 | grep -v vendor || true)
+if [ -n "$GOFMT_OUTPUT" ]; then
+    echo "The following files need formatting:"
+    echo "$GOFMT_OUTPUT"
+    echo "Run: gofmt -w ."
+    exit 1
+fi
+
+# Vet
+echo "Running go vet..."
+go vet ./...
+
+# Build
+echo "Running go build..."
+go build ./...
+
+# Lint (if golangci-lint is installed)
+if command -v golangci-lint &> /dev/null; then
+    echo "Running golangci-lint..."
+    golangci-lint run ./...
+else
+    echo "Skipping golangci-lint (not installed)"
+    echo "Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest"
+fi
+
+# Tests (optional, can be slow)
+if [ "$RUN_TESTS" = "1" ]; then
+    echo "Running tests..."
+    go test -race ./...
+fi
+
+echo "All pre-commit checks passed!"
