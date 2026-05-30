@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yasharora2020/helmx/internal/helm"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yasharora2020/helmx/internal/helm"
 )
 
 // Log viewer message types

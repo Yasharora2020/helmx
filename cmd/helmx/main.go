@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yasharora2020/helmx/internal/tui"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/yasharora2020/helmx/internal/tui"
 )
 
 var (

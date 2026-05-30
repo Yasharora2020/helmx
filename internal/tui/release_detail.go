@@ -5,11 +5,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yasharora2020/helmx/internal/helm"
-	"github.com/yasharora2020/helmx/internal/tui/dialog"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yasharora2020/helmx/internal/helm"
+	"github.com/yasharora2020/helmx/internal/tui/dialog"
 )
 
 // ReleaseDetailPane represents which pane is focused
@@ -119,8 +119,8 @@ type ReleaseDetail struct {
 	upgrading            bool   // True while upgrade is in progress
 
 	// Upgrade value sources (multiple files + --set overrides)
-	upgradeValueFiles  []string
-	upgradeSetValues   []string
+	upgradeValueFiles []string
+	upgradeSetValues  []string
 
 	// Dialogs for upgrade value sources
 	upgradeFileImportDialog   *dialog.FileImportDialog

@@ -196,7 +196,6 @@ func TestSave_CreatesDirectoryAndFile(t *testing.T) {
 	}
 }
 
-
 // ---------- Stack CRUD ----------
 
 func TestAddStack_Success(t *testing.T) {
@@ -646,7 +645,6 @@ func TestConfigPath_ReturnsNonEmpty(t *testing.T) {
 }
 
 // ---------- Edge cases ----------
-
 
 func TestStack_EmptyCharts(t *testing.T) {
 	cfg := &Config{}
