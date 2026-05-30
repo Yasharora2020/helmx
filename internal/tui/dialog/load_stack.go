@@ -24,19 +24,19 @@ type LoadStackResultMsg struct {
 type LoadStackDialog struct {
 	BaseDialog
 
-	stacks   []LoadStackItem
-	cursor   int
-	lastErr  string
+	stacks  []LoadStackItem
+	cursor  int
+	lastErr string
 
 	// Styles
-	TitleStyle       lipgloss.Style
-	LabelStyle       lipgloss.Style
-	MutedStyle       lipgloss.Style
-	SelectedStyle    lipgloss.Style
-	ErrorStyle       lipgloss.Style
-	BorderColor      lipgloss.Color
-	ChartIcon        string
-	ArrowIcon        string
+	TitleStyle    lipgloss.Style
+	LabelStyle    lipgloss.Style
+	MutedStyle    lipgloss.Style
+	SelectedStyle lipgloss.Style
+	ErrorStyle    lipgloss.Style
+	BorderColor   lipgloss.Color
+	ChartIcon     string
+	ArrowIcon     string
 }
 
 // NewLoadStackDialog creates a new load stack dialog.

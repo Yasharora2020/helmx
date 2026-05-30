@@ -26,8 +26,8 @@ package tui
 // 4. ExploreView updates dialog state with results
 
 import (
-	"github.com/yasharora2020/helmx/internal/tui/dialog"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yasharora2020/helmx/internal/tui/dialog"
 )
 
 // initDialogStyles initializes styles for all dialogs.

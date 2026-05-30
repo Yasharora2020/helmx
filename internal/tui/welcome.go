@@ -3,10 +3,10 @@ package tui
 import (
 	"strings"
 
-	"github.com/yasharora2020/helmx/internal/config"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yasharora2020/helmx/internal/config"
 )
 
 // WelcomeView displays the welcome page with app info and keybindings

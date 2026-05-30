@@ -7,14 +7,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/yasharora2020/helmx/internal/config"
-	"github.com/yasharora2020/helmx/internal/helm"
-	"github.com/yasharora2020/helmx/internal/tui/dialog"
-	"github.com/yasharora2020/helmx/internal/tui/validation"
 	"github.com/charmbracelet/bubbles/textinput"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yasharora2020/helmx/internal/config"
+	"github.com/yasharora2020/helmx/internal/helm"
+	"github.com/yasharora2020/helmx/internal/tui/dialog"
+	"github.com/yasharora2020/helmx/internal/tui/validation"
 	"gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/chart"
 )
@@ -81,17 +81,17 @@ type ExploreView struct {
 	templateFileImportActive bool
 	templateSetValueActive   bool
 	templateSourcesActive    bool
-	versionDialog      *dialog.VersionDialog
-	schemaDialog       *dialog.SchemaDialog
-	readmeDialog       *dialog.ReadmeDialog
-	securityDialog     *dialog.SecurityDialog
-	templateDialog     *dialog.TemplateDialog
-	progressDialog     *dialog.ProgressDialog
-	installDialog      *dialog.InstallDialog
-	multiChartDialog   *dialog.MultiChartDialog
-	saveTemplateDialog *dialog.SaveTemplateDialog
-	saveStackDialog    *dialog.SaveStackDialog
-	loadStackDialog    *dialog.LoadStackDialog
+	versionDialog            *dialog.VersionDialog
+	schemaDialog             *dialog.SchemaDialog
+	readmeDialog             *dialog.ReadmeDialog
+	securityDialog           *dialog.SecurityDialog
+	templateDialog           *dialog.TemplateDialog
+	progressDialog           *dialog.ProgressDialog
+	installDialog            *dialog.InstallDialog
+	multiChartDialog         *dialog.MultiChartDialog
+	saveTemplateDialog       *dialog.SaveTemplateDialog
+	saveStackDialog          *dialog.SaveStackDialog
+	loadStackDialog          *dialog.LoadStackDialog
 }
 
 // NewExploreView creates a new explore view
@@ -1214,43 +1214,6 @@ func (e *ExploreView) loadMultiChartStackByName(name string) tea.Cmd {
 		}
 
 		e.multiChartDialog.ClearQueue()
-		for _, sc := range stack.Charts {
-			item := dialog.MultiChartQueueItem{
-				ChartRef:        sc.ChartRef,
-				ChartName:       sc.ChartRef,
-				ReleaseName:     sc.ReleaseName,
-				Namespace:       sc.Namespace,
-				Values:          sc.Values,
-				CreateNamespace: sc.CreateNamespace,
-				WaitForReady:    sc.WaitForReady,
-				Status:          dialog.MultiChartPending,
-			}
-			e.multiChartDialog.AddToQueue(item)
-		}
-
-		return multiChartStackLoadedMsg{name: stack.Name}
-	}
-}
-
-// loadMultiChartStack loads a stack from config into the queue
-func (e *ExploreView) loadMultiChartStack() tea.Cmd {
-	return func() tea.Msg {
-		if e.multiChartDialog == nil {
-			return multiChartStackLoadedMsg{err: fmt.Errorf("dialog not initialized")}
-		}
-
-		// Get available stacks from config
-		stacks := e.config.GetStacks()
-		if len(stacks) == 0 {
-			return multiChartStackLoadedMsg{err: fmt.Errorf("no saved stacks found")}
-		}
-
-		// For now, load the first stack (TODO: add stack selection dialog)
-		stack := stacks[0]
-
-		// Clear existing queue and load stack charts
-		e.multiChartDialog.ClearQueue()
-
 		for _, sc := range stack.Charts {
 			item := dialog.MultiChartQueueItem{
 				ChartRef:        sc.ChartRef,

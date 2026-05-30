@@ -5,11 +5,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yasharora2020/helmx/internal/helm"
-	"github.com/yasharora2020/helmx/internal/tui/validation"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yasharora2020/helmx/internal/helm"
+	"github.com/yasharora2020/helmx/internal/tui/validation"
 )
 
 // ReposView handles repository management

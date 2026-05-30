@@ -17,8 +17,8 @@ func writeTempYAML(t *testing.T, content string) string {
 	if err := os.WriteFile(f.Name(), []byte(content), 0644); err != nil {
 		t.Fatalf("writing temp file: %v", err)
 	}
-	f.Close()
-	t.Cleanup(func() { os.Remove(f.Name()) })
+	_ = f.Close()
+	t.Cleanup(func() { _ = os.Remove(f.Name()) })
 	return f.Name()
 }
 
